@@ -1659,8 +1659,13 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: ['/admin/:path*'],
+  runtime: 'nodejs',
 };
 ```
+
+Middleware runs in the Edge runtime by default, which does not support Node's
+`crypto` module used by `lib/auth.ts` (`createHmac`/`timingSafeEqual`) — hence
+`runtime: 'nodejs'`, stable since Next 15.2.
 
 - [ ] **Step 2: Commit**
 
