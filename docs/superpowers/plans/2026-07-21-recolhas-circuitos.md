@@ -1145,7 +1145,7 @@ git commit -m "feat: add GET/POST /api/moradas"
 - Test: `app/api/moradas/[id]/route.test.ts`
 
 **Interfaces:**
-- Consumes: same helpers as Task 8, plus dynamic route `params.id`.
+- Consumes: same helpers as Task 8, plus dynamic route `params` (Next 15: a `Promise<{ id: string }>`, must be awaited).
 - Produces: `PUT /api/moradas/:id` body `{ zona, categoria, nome, codigo_bruto }` → `{ morada: Morada }`; `DELETE /api/moradas/:id` → `{ ok: true }`. Both 401 when not authenticated.
 
 - [ ] **Step 1: Write the failing tests**
@@ -1182,7 +1182,7 @@ describe('PUT /api/moradas/[id]', () => {
       method: 'PUT',
       body: JSON.stringify({ zona: '4100', categoria: 'Rua', nome: 'X', codigo_bruto: 'A' }),
     });
-    const response = await PUT(request, { params: { id: '1' } });
+    const response = await PUT(request, { params: Promise.resolve({ id: '1' }) });
     expect(response.status).toBe(401);
   });
 
@@ -1212,7 +1212,7 @@ describe('PUT /api/moradas/[id]', () => {
       body: JSON.stringify({ zona: '4100', categoria: 'Rua', nome: 'X', codigo_bruto: 'B' }),
       headers: { Cookie: await authCookieHeader() },
     });
-    const response = await PUT(request, { params: { id: '1' } });
+    const response = await PUT(request, { params: Promise.resolve({ id: '1' }) });
     const body = await response.json();
 
     expect(response.status).toBe(200);
@@ -1227,7 +1227,7 @@ describe('DELETE /api/moradas/[id]', () => {
   it('rejects when not authenticated', async () => {
     const { DELETE } = await import('./route');
     const request = new Request('http://localhost/api/moradas/1', { method: 'DELETE' });
-    const response = await DELETE(request, { params: { id: '1' } });
+    const response = await DELETE(request, { params: Promise.resolve({ id: '1' }) });
     expect(response.status).toBe(401);
   });
 
@@ -1239,7 +1239,7 @@ describe('DELETE /api/moradas/[id]', () => {
       method: 'DELETE',
       headers: { Cookie: await authCookieHeader() },
     });
-    const response = await DELETE(request, { params: { id: '1' } });
+    const response = await DELETE(request, { params: Promise.resolve({ id: '1' }) });
     const body = await response.json();
 
     expect(response.status).toBe(200);
@@ -1279,12 +1279,13 @@ function isAuthenticated(request: Request): boolean {
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   if (!isAuthenticated(request)) {
     return Response.json({ error: 'Não autenticado' }, { status: 401 });
   }
 
+  const { id } = await params;
   const body = await request.json();
   const { zona, categoria, nome, codigo_bruto } = body;
 
@@ -1305,7 +1306,7 @@ export async function PUT(
       circuito,
       atualizado_em: new Date().toISOString(),
     })
-    .eq('id', params.id)
+    .eq('id', id)
     .select()
     .single();
 
@@ -1318,14 +1319,15 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   if (!isAuthenticated(request)) {
     return Response.json({ error: 'Não autenticado' }, { status: 401 });
   }
 
+  const { id } = await params;
   const supabase = getSupabaseClient();
-  const { error } = await supabase.from('moradas').delete().eq('id', params.id);
+  const { error } = await supabase.from('moradas').delete().eq('id', id);
 
   if (error) {
     return Response.json({ error: error.message }, { status: 500 });
