@@ -2151,48 +2151,24 @@ git commit -m "feat: add admin listing with create/edit/delete/reimport"
 
 **This task involves pushing the app to a public URL — confirm with the user before running deploy commands, per the project's safety guidelines around actions affecting shared/external systems.**
 
-- [ ] **Step 1: Log in to Vercel CLI (if not already logged in)**
+**Deviation from the plan (actually done):** the Vercel CLI's own internal
+update-check (`get-latest-worker.cjs` → `fetch-dist-tags.cjs`) calls Node's
+raw `https.get()`, which — unlike `fetch()`/undici — never respects
+`HTTPS_PROXY`/`NODE_USE_ENV_PROXY`, so it hit this machine's node.exe
+outbound-network block (see `.superpowers/sdd/progress.md`) with no
+workaround available (setting `NO_UPDATE_NOTIFIER=1` would have skipped it,
+but the user preferred the dashboard). Deployed instead via the Vercel
+**web dashboard**: Add New Project → Import Git Repository → `CdpRec` →
+added the 4 env vars in the import screen → Deploy. This also wires up
+automatic deployment on every future push to `main`, which the CLI
+approach wouldn't have set up by default.
 
-Run: `npx vercel login`
-Expected: browser opens, user authorizes, CLI prints "Success!".
-
-- [ ] **Step 2: Link the project**
-
-Run: `npx vercel link`
-Expected: prompts to select/create a Vercel project; creates `.vercel/` locally (already covered by `.gitignore`? — add it if not).
-
-- [ ] **Step 3: Add `.vercel` to `.gitignore` if missing**
-
-Check `.gitignore` contains `.vercel`; if not, append it.
-
-- [ ] **Step 4: Set production environment variables**
-
-Run each of (values filled in by the user from their `.env.local`, not typed into chat):
-```bash
-npx vercel env add SUPABASE_URL production
-npx vercel env add SUPABASE_SERVICE_ROLE_KEY production
-npx vercel env add ADMIN_PASSWORD production
-npx vercel env add SESSION_SECRET production
-```
-Expected: each prompts for the value interactively and confirms it was added.
-
-- [ ] **Step 5: Deploy to production**
-
-Run: `npx vercel --prod`
-Expected: build succeeds, prints a production URL (e.g. `https://recolhas-ctt-circuitos.vercel.app`).
-
-- [ ] **Step 6: Verify the deployed app**
-
-Open the production URL on a phone browser:
-1. Search page loads and returns results for a known street.
-2. `/admin` redirects to `/admin/login`; log in with `ADMIN_PASSWORD`; confirm add/edit/delete work against the real Supabase data.
-
-- [ ] **Step 7: Commit any `.gitignore` changes**
-
-```bash
-git add .gitignore
-git commit -m "chore: ignore .vercel local config"
-```
+- [x] **Steps 1-2 (login/link): done via dashboard Git import instead of CLI.**
+- [x] **Step 3: `.gitignore`** — not needed; no `.vercel/` directory exists locally since the project was never CLI-linked.
+- [x] **Step 4: Production environment variables** — set via the dashboard's Environment Variables section during import: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_PASSWORD`, `SESSION_SECRET`.
+- [x] **Step 5: Deploy to production** — done via dashboard. Production URL: **https://cdp-rec.vercel.app/**
+- [x] **Step 6: Verify the deployed app** — confirmed: `/` returns 200 with real Supabase data, `/admin` redirects to `/admin/login` (307), wrong password → 401, `/manifest.webmanifest` and `/sw.js` both 200. User confirmed login + admin access working in a real browser after fixing an environment variable typo.
+- [x] **Step 7: `.gitignore`** — no change needed (see Step 3).
 
 ---
 
