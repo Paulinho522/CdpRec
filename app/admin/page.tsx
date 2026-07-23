@@ -116,9 +116,14 @@ export default function AdminPage() {
         <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">
           Administração
         </h1>
-        <Button variant="secondary" onClick={handleLogout}>
-          Sair
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="secondary" onClick={() => router.push('/')}>
+            Página principal
+          </Button>
+          <Button variant="secondary" onClick={handleLogout}>
+            Sair
+          </Button>
+        </div>
       </div>
 
       <div className="mx-auto max-w-xl space-y-6 px-4 py-4">

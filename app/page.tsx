@@ -1,11 +1,14 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import type { Morada } from '@/lib/types';
 import Card from '@/components/Card';
 import Skeleton from '@/components/Skeleton';
+import Button from '@/components/Button';
 
 export default function SearchPage() {
+  const router = useRouter();
   const [all, setAll] = useState<Morada[]>([]);
   const [query, setQuery] = useState('');
   const [zona, setZona] = useState('');
@@ -44,9 +47,14 @@ export default function SearchPage() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="sticky top-0 z-10 border-b border-gray-200 bg-gray-50/95 backdrop-blur dark:border-gray-800 dark:bg-gray-900/95">
         <div className="mx-auto max-w-xl px-4 pt-4 pb-3">
-          <h1 className="mb-3 text-xl font-bold text-gray-900 dark:text-gray-100">
-            Recolhas CTT — Circuitos
-          </h1>
+          <div className="mb-3 flex items-center justify-between">
+            <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+              Recolhas CTT — Circuitos
+            </h1>
+            <Button variant="secondary" onClick={() => router.push('/admin')}>
+              Administração
+            </Button>
+          </div>
           <input
             className="min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-base text-gray-900 placeholder-gray-400 focus:border-ctt-red focus:outline-none focus:ring-2 focus:ring-ctt-red/30 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
             placeholder="Pesquisar rua, freguesia ou cliente..."
@@ -85,13 +93,6 @@ export default function SearchPage() {
             </div>
           </Card>
         ))}
-
-        <a
-          className="block py-6 text-center text-sm text-gray-400 hover:text-ctt-red dark:text-gray-500"
-          href="/admin"
-        >
-          Administração
-        </a>
       </div>
     </div>
   );
