@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+:root {
+  color-scheme: light dark;
+}
+
 @theme {
   --color-ctt-red: #e4032e;
   --color-ctt-red-dark: #b8022d;
