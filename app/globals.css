@@ -1,3 +1,39 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ctt-red: #e4032e;
+  --color-ctt-red-dark: #b8022d;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes toast-slide-in {
+  from { transform: translateY(1rem); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-skeleton-pulse {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.animate-toast-slide-in {
+  animation: toast-slide-in 0.2s ease-out;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.25s ease-out;
+}
+
+/* --- Legacy classes below, still used by not-yet-rewritten pages.
+   Removed in Task 9 once every page uses Tailwind utilities instead. --- */
 * {
   box-sizing: border-box;
 }
