@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-const selectMock = vi.fn();
+const rangeMock = vi.fn();
+const selectMock = vi.fn(() => ({ range: rangeMock }));
 const insertMock = vi.fn();
 const fromMock = vi.fn(() => ({ select: selectMock, insert: insertMock }));
 
@@ -23,7 +24,8 @@ const sampleRows = [
 
 beforeEach(() => {
   vi.clearAllMocks();
-  selectMock.mockResolvedValue({ data: sampleRows, error: null });
+  selectMock.mockImplementation(() => ({ range: rangeMock }));
+  rangeMock.mockResolvedValue({ data: sampleRows, error: null });
 });
 
 describe('GET /api/moradas', () => {
