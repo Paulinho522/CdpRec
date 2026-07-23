@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useMemo } from 'react';
 import type { Morada } from '@/lib/types';
+import Card from '@/components/Card';
+import Skeleton from '@/components/Skeleton';
 
 export default function SearchPage() {
   const [all, setAll] = useState<Morada[]>([]);
@@ -39,41 +41,58 @@ export default function SearchPage() {
   }, [all, query, zona]);
 
   return (
-    <div className="container">
-      <h1>Recolhas CTT — Circuitos</h1>
-      <input
-        className="search-input"
-        placeholder="Pesquisar rua, freguesia ou cliente..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <select
-        className="zona-select"
-        value={zona}
-        onChange={(e) => setZona(e.target.value)}
-      >
-        <option value="">Todas as zonas</option>
-        {zonas.map((z) => (
-          <option key={z} value={z}>
-            {z}
-          </option>
-        ))}
-      </select>
-
-      {loading && <p>A carregar...</p>}
-      {!loading && results.length === 0 && <p>Sem resultados.</p>}
-      {results.slice(0, 200).map((m) => (
-        <div className="card" key={m.id}>
-          <div className="circuito">{m.circuito || '(sem circuito)'}</div>
-          <div className="meta">
-            {m.categoria} · {m.nome} · zona {m.zona}
-          </div>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="sticky top-0 z-10 border-b border-gray-200 bg-gray-50/95 backdrop-blur dark:border-gray-800 dark:bg-gray-900/95">
+        <div className="mx-auto max-w-xl px-4 pt-4 pb-3">
+          <h1 className="mb-3 text-xl font-bold text-gray-900 dark:text-gray-100">
+            Recolhas CTT — Circuitos
+          </h1>
+          <input
+            className="min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-base text-gray-900 placeholder-gray-400 focus:border-ctt-red focus:outline-none focus:ring-2 focus:ring-ctt-red/30 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+            placeholder="Pesquisar rua, freguesia ou cliente..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          <select
+            className="min-h-11 mt-2 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-base text-gray-900 focus:border-ctt-red focus:outline-none focus:ring-2 focus:ring-ctt-red/30 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+            value={zona}
+            onChange={(e) => setZona(e.target.value)}
+          >
+            <option value="">Todas as zonas</option>
+            {zonas.map((z) => (
+              <option key={z} value={z}>
+                {z}
+              </option>
+            ))}
+          </select>
         </div>
-      ))}
+      </div>
 
-      <a className="admin-link" href="/admin">
-        Administração
-      </a>
+      <div className="mx-auto max-w-xl space-y-2 px-4 py-4">
+        {loading && <Skeleton />}
+        {!loading && results.length === 0 && (
+          <p className="py-8 text-center text-gray-500 dark:text-gray-400">
+            Sem resultados.
+          </p>
+        )}
+        {results.slice(0, 200).map((m) => (
+          <Card key={m.id}>
+            <div className="text-xl font-bold text-ctt-red">
+              {m.circuito || '(sem circuito)'}
+            </div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">
+              {m.categoria} · {m.nome} · zona {m.zona}
+            </div>
+          </Card>
+        ))}
+
+        <a
+          className="block py-6 text-center text-sm text-gray-400 hover:text-ctt-red dark:text-gray-500"
+          href="/admin"
+        >
+          Administração
+        </a>
+      </div>
     </div>
   );
 }
