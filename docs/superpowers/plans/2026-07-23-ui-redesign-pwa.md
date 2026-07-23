@@ -30,12 +30,12 @@
 **Interfaces:**
 - Produces: `--color-ctt-red` / `--color-ctt-red-dark` Tailwind theme colors (→ `bg-ctt-red`, `text-ctt-red`, etc.), and utility classes `.animate-skeleton-pulse`, `.animate-toast-slide-in`, `.animate-fade-in` — used by every later task's components/pages.
 
-- [ ] **Step 1: Install Tailwind CSS v4**
+- [x] **Step 1: Install Tailwind CSS v4**
 
 Run: `npm install -D --save-exact tailwindcss @tailwindcss/postcss`
 Expected: `package.json` gains both packages under `devDependencies` with exact pinned versions, no errors.
 
-- [ ] **Step 2: Create `postcss.config.mjs`**
+- [x] **Step 2: Create `postcss.config.mjs`**
 
 ```js
 /** @type {import('postcss-load-config').Config} */
@@ -48,7 +48,7 @@ const config = {
 export default config;
 ```
 
-- [ ] **Step 3: Update `app/globals.css`**
+- [x] **Step 3: Update `app/globals.css`**
 
 Prepend the Tailwind import, theme, and animation utilities. Keep the existing hand-written classes below for now — later tasks (6, 7, 8) migrate each page off them, and Task 9 removes them once nothing references them.
 
@@ -154,7 +154,7 @@ input, select, button {
 }
 ```
 
-- [ ] **Step 4: Verify the build picks up Tailwind**
+- [x] **Step 4: Verify the build picks up Tailwind**
 
 Run: `npx tsc --noEmit`
 Expected: no output (clean).
@@ -162,7 +162,7 @@ Expected: no output (clean).
 Run (in one terminal, with the local network proxy env vars from `.superpowers/sdd/progress.md` if Supabase calls are needed — this step doesn't need them since it's just a build/style check): `npm run dev`
 Expected: server starts without PostCSS/Tailwind errors in the log. Stop the server after confirming (Ctrl+C or `TaskStop`).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add postcss.config.mjs app/globals.css package.json package-lock.json
@@ -182,7 +182,7 @@ git commit -m "chore: install and configure Tailwind CSS v4"
 - Consumes: `--color-ctt-red` / animation utilities (Task 1).
 - Produces: `Button` (default export, props: `variant?: 'primary'|'secondary'|'danger'`, plus all native `<button>` props), `Card` (default export, props: `children`, `className?`), `Skeleton` (default export, props: `count?: number`) — used by Tasks 4, 6, 7, 8.
 
-- [ ] **Step 1: Create `components/Button.tsx`**
+- [x] **Step 1: Create `components/Button.tsx`**
 
 ```tsx
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
@@ -218,7 +218,7 @@ export default function Button({
 }
 ```
 
-- [ ] **Step 2: Create `components/Card.tsx`**
+- [x] **Step 2: Create `components/Card.tsx`**
 
 ```tsx
 import type { ReactNode } from 'react';
@@ -239,7 +239,7 @@ export default function Card({ children, className = '' }: CardProps) {
 }
 ```
 
-- [ ] **Step 3: Create `components/Skeleton.tsx`**
+- [x] **Step 3: Create `components/Skeleton.tsx`**
 
 ```tsx
 interface SkeletonProps {
@@ -260,12 +260,12 @@ export default function Skeleton({ count = 4 }: SkeletonProps) {
 }
 ```
 
-- [ ] **Step 4: Verify**
+- [x] **Step 4: Verify**
 
 Run: `npx tsc --noEmit`
 Expected: no output (clean). Nothing imports these components yet — that's fine, unused exports aren't a TypeScript error.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add components/Button.tsx components/Card.tsx components/Skeleton.tsx
@@ -283,7 +283,7 @@ git commit -m "feat: add Button, Card, Skeleton UI primitives"
 **Interfaces:**
 - Produces: `ToastProvider` (named export, wraps children), `useToast()` (named export, returns `{ show: (message: string, variant?: 'success' | 'error') => void }`) — used by Task 8.
 
-- [ ] **Step 1: Create `components/ToastProvider.tsx`**
+- [x] **Step 1: Create `components/ToastProvider.tsx`**
 
 ```tsx
 'use client';
@@ -360,7 +360,7 @@ export function useToast(): ToastContextValue {
 }
 ```
 
-- [ ] **Step 2: Wire `ToastProvider` into `app/layout.tsx`**
+- [x] **Step 2: Wire `ToastProvider` into `app/layout.tsx`**
 
 ```tsx
 import './globals.css';
@@ -383,12 +383,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 }
 ```
 
-- [ ] **Step 3: Verify**
+- [x] **Step 3: Verify**
 
 Run: `npx tsc --noEmit`
 Expected: no output (clean).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add components/ToastProvider.tsx app/layout.tsx
@@ -407,7 +407,7 @@ git commit -m "feat: add ToastProvider"
 - Consumes: `Button` (Task 2).
 - Produces: `ConfirmDialogProvider` (named export, wraps children), `useConfirm()` (named export, returns `(options: { title: string; message: string }) => Promise<boolean>`) — used by Task 8.
 
-- [ ] **Step 1: Create `components/ConfirmDialogProvider.tsx`**
+- [x] **Step 1: Create `components/ConfirmDialogProvider.tsx`**
 
 ```tsx
 'use client';
@@ -484,7 +484,7 @@ export function useConfirm(): ConfirmFn {
 }
 ```
 
-- [ ] **Step 2: Wire `ConfirmDialogProvider` into `app/layout.tsx`**
+- [x] **Step 2: Wire `ConfirmDialogProvider` into `app/layout.tsx`**
 
 ```tsx
 import './globals.css';
@@ -510,12 +510,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 }
 ```
 
-- [ ] **Step 3: Verify**
+- [x] **Step 3: Verify**
 
 Run: `npx tsc --noEmit`
 Expected: no output (clean).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add components/ConfirmDialogProvider.tsx app/layout.tsx
@@ -540,14 +540,14 @@ git commit -m "feat: add ConfirmDialogProvider"
 **Interfaces:**
 - Produces: `/manifest.webmanifest` (via Next's `app/manifest.ts` convention), `/sw.js`, `/icons/*.png` — no other task depends on these directly, but Task 9's final verification checks them.
 
-- [ ] **Step 1: Add `sharp` as an explicit devDependency**
+- [x] **Step 1: Add `sharp` as an explicit devDependency**
 
 `sharp` is already installed transitively (Next uses it for image optimization, pinned via the `overrides` field in `package.json` to `0.35.3`). This step adds it as a direct devDependency at the same version so `scripts/generate-icons.ts` can `import sharp from 'sharp'` reliably regardless of hoisting.
 
 Run: `npm install -D --save-exact sharp@0.35.3`
 Expected: `sharp` appears under `devDependencies` in `package.json`.
 
-- [ ] **Step 2: Create the icon source SVGs**
+- [x] **Step 2: Create the icon source SVGs**
 
 Run: `mkdir -p public/icons`
 
@@ -571,7 +571,7 @@ Create `public/icons/icon-maskable.svg` (used only for the maskable icon — ful
 </svg>
 ```
 
-- [ ] **Step 3: Create `scripts/generate-icons.ts`**
+- [x] **Step 3: Create `scripts/generate-icons.ts`**
 
 ```ts
 import sharp from 'sharp';
@@ -609,12 +609,12 @@ async function main() {
 main();
 ```
 
-- [ ] **Step 4: Run the generator and verify the output files**
+- [x] **Step 4: Run the generator and verify the output files**
 
 Run: `npx tsx scripts/generate-icons.ts`
 Expected: prints `Icons generated in .../public/icons`, and `public/icons/icon-192.png`, `icon-512.png`, `icon-512-maskable.png`, `apple-touch-icon.png` all exist.
 
-- [ ] **Step 5: Create `app/manifest.ts`**
+- [x] **Step 5: Create `app/manifest.ts`**
 
 ```ts
 import type { MetadataRoute } from 'next';
@@ -650,7 +650,7 @@ export default function manifest(): MetadataRoute.Manifest {
 }
 ```
 
-- [ ] **Step 6: Create `public/sw.js`**
+- [x] **Step 6: Create `public/sw.js`**
 
 ```js
 const CACHE_NAME = 'recolhas-ctt-shell-v1';
@@ -693,7 +693,7 @@ self.addEventListener('fetch', (event) => {
 });
 ```
 
-- [ ] **Step 7: Create `components/ServiceWorkerRegister.tsx`**
+- [x] **Step 7: Create `components/ServiceWorkerRegister.tsx`**
 
 ```tsx
 'use client';
@@ -713,7 +713,7 @@ export default function ServiceWorkerRegister() {
 }
 ```
 
-- [ ] **Step 8: Wire icons, theme color, and service worker registration into `app/layout.tsx`**
+- [x] **Step 8: Wire icons, theme color, and service worker registration into `app/layout.tsx`**
 
 ```tsx
 import './globals.css';
@@ -750,7 +750,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 }
 ```
 
-- [ ] **Step 9: Verify**
+- [x] **Step 9: Verify**
 
 Run: `npx tsc --noEmit`
 Expected: no output (clean).
@@ -765,7 +765,7 @@ Expected: all three print `200`. (Port may differ if 3000 is occupied — check 
 
 Manual check (browser, DevTools → Application → Manifest): no errors shown, icons listed correctly.
 
-- [ ] **Step 10: Commit**
+- [x] **Step 10: Commit**
 
 ```bash
 git add public/icons app/manifest.ts public/sw.js components/ServiceWorkerRegister.tsx app/layout.tsx scripts/generate-icons.ts package.json package-lock.json
@@ -782,7 +782,7 @@ git commit -m "feat: add PWA manifest, icons, and service worker"
 **Interfaces:**
 - Consumes: `Card`, `Skeleton` (Task 2); `GET /api/moradas` (existing).
 
-- [ ] **Step 1: Rewrite `app/page.tsx`**
+- [x] **Step 1: Rewrite `app/page.tsx`**
 
 ```tsx
 'use client';
@@ -885,12 +885,12 @@ export default function SearchPage() {
 }
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Run: `npx tsc --noEmit`
 Expected: no output (clean).
 
-- [ ] **Step 3: Manual browser verification**
+- [x] **Step 3: Manual browser verification**
 
 Run: `npm run dev` (with the local network proxy running per `.superpowers/sdd/progress.md`, and `.env.local` filled in). Open the app's URL.
 Expected:
@@ -901,7 +901,7 @@ Expected:
 5. Switching the OS/browser to dark mode flips the page to the dark palette automatically.
 6. On a narrow/mobile viewport (DevTools device toolbar), inputs and the search field are comfortably tappable.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add app/page.tsx
@@ -918,7 +918,7 @@ git commit -m "feat: restyle public search page with Tailwind"
 **Interfaces:**
 - Consumes: `Button` (Task 2); `POST /api/admin/login` (existing).
 
-- [ ] **Step 1: Rewrite `app/admin/login/page.tsx`**
+- [x] **Step 1: Rewrite `app/admin/login/page.tsx`**
 
 ```tsx
 'use client';
@@ -976,17 +976,17 @@ export default function AdminLoginPage() {
 }
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Run: `npx tsc --noEmit`
 Expected: no output (clean).
 
-- [ ] **Step 3: Manual browser verification**
+- [x] **Step 3: Manual browser verification**
 
 Run: `npm run dev`. Open `/admin` (redirects to `/admin/login` per middleware).
 Expected: wrong password shows the red error text; correct `ADMIN_PASSWORD` (from `.env.local`) redirects to `/admin`; the submit button shows "A entrar..." briefly and is disabled while submitting; looks correct in both light and dark mode.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add app/admin/login/page.tsx
@@ -1003,7 +1003,7 @@ git commit -m "feat: restyle admin login page with Tailwind"
 **Interfaces:**
 - Consumes: `Button`, `Card`, `Skeleton` (Task 2); `useToast` (Task 3); `useConfirm` (Task 4); `GET/POST /api/moradas`, `PUT/DELETE /api/moradas/[id]`, `POST /api/import`, `POST /api/admin/logout` (existing).
 
-- [ ] **Step 1: Rewrite `app/admin/page.tsx`**
+- [x] **Step 1: Rewrite `app/admin/page.tsx`**
 
 ```tsx
 'use client';
@@ -1233,12 +1233,12 @@ export default function AdminPage() {
 }
 ```
 
-- [ ] **Step 2: Verify**
+- [x] **Step 2: Verify**
 
 Run: `npx tsc --noEmit`
 Expected: no output (clean).
 
-- [ ] **Step 3: Manual browser verification**
+- [x] **Step 3: Manual browser verification**
 
 Run: `npm run dev` (with the local network proxy running, `.env.local` filled in). Log in at `/admin/login`, then on `/admin`:
 1. Add a test entry (zona `9999`, categoria `Rua`, nome `TESTE`, código `A`) → toast "Entrada criada.", card appears immediately with circuito `9999A`.
@@ -1250,7 +1250,7 @@ Run: `npm run dev` (with the local network proxy running, `.env.local` filled in
 
 Clean up any test data left in Supabase afterward (delete the `9999` entry via the UI itself, using the Delete button — this doubles as verifying the delete flow).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add app/admin/page.tsx
@@ -1267,7 +1267,7 @@ git commit -m "feat: restyle admin page with Tailwind, toasts, and confirm dialo
 **Interfaces:**
 - Consumes: nothing new — this is cleanup once Tasks 6-8 mean no page references the legacy classes anymore.
 
-- [ ] **Step 1: Strip the legacy classes from `app/globals.css`**
+- [x] **Step 1: Strip the legacy classes from `app/globals.css`**
 
 ```css
 @import "tailwindcss";
@@ -1305,12 +1305,12 @@ git commit -m "feat: restyle admin page with Tailwind, toasts, and confirm dialo
 }
 ```
 
-- [ ] **Step 2: Verify nothing still references the removed classes**
+- [x] **Step 2: Verify nothing still references the removed classes**
 
 Run: `grep -rn "search-input\|zona-select\|admin-link\|className=\"card\"" app/ --include=*.tsx`
 Expected: no matches (Tasks 6-8 already replaced every usage with Tailwind utilities).
 
-- [ ] **Step 3: Full verification**
+- [x] **Step 3: Full verification**
 
 Run: `npx tsc --noEmit`
 Expected: no output (clean).
@@ -1320,7 +1320,7 @@ Expected: `Test Files 9 passed (9)`, `Tests 32 passed (32)` — unchanged from b
 
 Run: `npm run dev` (with the local network proxy running, `.env.local` filled in). Smoke-check both `/` and `/admin` render correctly with no missing styles (nothing was silently still depending on a removed class), and re-check DevTools → Application → Manifest/Service Worker one more time now that the CSS is final.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add app/globals.css
