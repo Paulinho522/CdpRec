@@ -932,6 +932,8 @@ git commit -m "feat: add admin password/session token helpers"
 
 **Interfaces:**
 - Consumes: `getSupabaseClient` (Task 5), `filterMoradas` (Task 3), `normalizeCircuito` (Task 2), `Morada`/`MoradaInput` (Task 1), `SESSION_COOKIE_NAME`/`verifySessionToken` (Task 7).
+
+**Note found during Task 13/15 manual verification:** PostgREST caps `.select('*')` at 1000 rows by default. This table has 1602+ rows (Task 6), so `GET` must page through with `.range()` until a short page — a single unpaginated `select('*')` silently drops rows past the cutoff (a newly-created row could easily land past it and never appear).
 - Produces: HTTP `GET /api/moradas?q=&zona=` → `{ moradas: Morada[] }`; `POST /api/moradas` body `{ zona, categoria, nome, codigo_bruto }` → `{ morada: Morada }` (201) or `{ error }` (401 if not authenticated).
 
 - [ ] **Step 1: Write the failing tests**
