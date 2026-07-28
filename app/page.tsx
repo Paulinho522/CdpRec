@@ -16,13 +16,17 @@ export default function SearchPage() {
   const [zona, setZona] = useState('');
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch('/api/moradas')
-      .then((res) => res.json())
-      .then((data) => setAll(data.moradas ?? []))
-      .finally(() => setLoading(false));
-  }, []);
+  async function reload() {
+    const res = await fetch('/api/moradas');
+    const data = await res.json();
 
+    setAll(data.moradas ?? []);
+  }
+
+  useEffect(() => {
+    reload().finally(() => setLoading(false));
+  }, []);
+  
   const zonas = useMemo(
     () => Array.from(new Set(all.map((m) => m.zona))).sort(),
     [all]
@@ -118,12 +122,8 @@ export default function SearchPage() {
       <InsertMoradaModal
         open={showModal}
         onClose={() => setShowModal(false)}
-        onSave={(dados) => {
-          console.log(dados);
-
-          // fetch('/api/moradas', ...)
-      }}>
-      </InsertMoradaModal>
+        onSave={reload}
+      />
   </div>
   );
 }
