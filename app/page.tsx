@@ -68,7 +68,10 @@ export default function SearchPage() {
               <div className="flex gap-2">
               <Button
                 variant="secondary"
-                onClick={() => setShowModal(true)}
+                onClick={() => {
+                  setSelectedMorada(null);
+                  setShowModal(true);
+                }}
               >
                 Inserir Dados
               </Button>
@@ -142,7 +145,7 @@ export default function SearchPage() {
           setSelectedMorada(null);
         }}
         onSave={reload}
-    />
+      />
   </div>
   );
 }
