@@ -11,6 +11,7 @@ import InsertMoradaModal from '@/components/InsertMoradas';
 export default function SearchPage() {
   const router = useRouter();
   const [all, setAll] = useState<Morada[]>([]);
+  const [selectedMorada, setSelectedMorada] = useState<Morada | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [query, setQuery] = useState('');
   const [zona, setZona] = useState('');
@@ -113,17 +114,35 @@ export default function SearchPage() {
             <div className="text-xl font-bold text-ctt-red">
               {m.circuito || '(sem circuito)'}
             </div>
+
             <div className="text-sm text-gray-500 dark:text-gray-400">
               {m.categoria} · {m.nome} · zona {m.zona}
             </div>
+
+            <div className="mt-3 flex gap-2">
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setSelectedMorada(m);
+                  setShowModal(true);
+                }}
+              >
+                Editar
+              </Button>
+            </div>
+
           </Card>
         ))}
       </div>
       <InsertMoradaModal
         open={showModal}
-        onClose={() => setShowModal(false)}
+        morada={selectedMorada}
+        onClose={() => {
+          setShowModal(false);
+          setSelectedMorada(null);
+        }}
         onSave={reload}
-      />
+    />
   </div>
   );
 }

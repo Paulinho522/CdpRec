@@ -1,13 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '@/components/Button';
 import { useToast } from '@/components/ToastProvider';
+import { Morada } from '@/lib/types';
 
 type Props = {
   open: boolean;
   onClose: () => void;
   onSave?: () => void;
+  morada?: Morada | null;
 };
 
 const emptyForm = {
@@ -17,15 +19,26 @@ const emptyForm = {
   codigo_bruto: '',
 };
 
+
+
 export default function InsertMoradaModal({
   open,
   onClose,
   onSave,
+  morada,
 }: Props) {
   const [form, setForm] = useState(emptyForm);
   const [loading, setLoading] = useState(false);
   const toast = useToast();
   if (!open) return null;
+
+  useEffect(() => {
+    if (morada) {
+      setForm(morada);
+    } else {
+      setForm(emptyForm);
+    }
+  }, [morada]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
