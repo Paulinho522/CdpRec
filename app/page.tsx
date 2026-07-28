@@ -75,14 +75,6 @@ export default function SearchPage() {
                 Administração
               </Button>
             </div>
-            <InsertMoradaModal
-              open={showModal}
-              onClose={() => setShowModal(false)}
-              onSave={(dados) => {
-                console.log(dados);
-
-                // fetch('/api/moradas', ...)
-              }}></InsertMoradaModal>
           </div>
           <input
             className="min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-base text-gray-900 placeholder-gray-400 focus:border-ctt-red focus:outline-none focus:ring-2 focus:ring-ctt-red/30 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
@@ -123,6 +115,15 @@ export default function SearchPage() {
           </Card>
         ))}
       </div>
+      <InsertMoradaModal
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        onSave={(dados) => {
+          console.log(dados);
+
+          // fetch('/api/moradas', ...)
+      }}>
+      </InsertMoradaModal>
   </div>
   );
 }
