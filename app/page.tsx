@@ -6,6 +6,7 @@ import type { Morada } from '@/lib/types';
 import Card from '@/components/Card';
 import Skeleton from '@/components/Skeleton';
 import Button from '@/components/Button';
+import InsertMoradaModal from '@/components/InsertMoradas';
 
 export default function SearchPage() {
   const router = useRouter();
@@ -74,6 +75,14 @@ export default function SearchPage() {
                 Administração
               </Button>
             </div>
+            <InsertMoradaModal
+              open={showModal}
+              onClose={() => setShowModal(false)}
+              onSave={(dados) => {
+                console.log(dados);
+
+                // fetch('/api/moradas', ...)
+              }}></InsertMoradaModal>
           </div>
           <input
             className="min-h-11 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-base text-gray-900 placeholder-gray-400 focus:border-ctt-red focus:outline-none focus:ring-2 focus:ring-ctt-red/30 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
@@ -114,83 +123,6 @@ export default function SearchPage() {
           </Card>
         ))}
       </div>
-      {showModal && (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-        <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl dark:bg-gray-800">
-          <h2 className="mb-4 text-xl font-bold">
-            Inserir Morada
-          </h2>
-
-          <div className="space-y-3">
-
-            <input
-              className="w-full rounded border p-2"
-              placeholder="Nome"
-              value={form.nome}
-              onChange={(e) =>
-                setForm({ ...form, nome: e.target.value })
-              }
-            />
-
-            <input
-              className="w-full rounded border p-2"
-              placeholder="Categoria"
-              value={form.categoria}
-              onChange={(e) =>
-                setForm({ ...form, categoria: e.target.value })
-              }
-            />
-
-            <input
-              className="w-full rounded border p-2"
-              placeholder="Circuito"
-              value={form.circuito}
-              onChange={(e) =>
-                setForm({ ...form, circuito: e.target.value })
-              }
-            />
-
-            <input
-              className="w-full rounded border p-2"
-              placeholder="Zona"
-              value={form.zona}
-              onChange={(e) =>
-                setForm({ ...form, zona: e.target.value })
-              }
-            />
-
-          </div>
-
-          <div className="mt-6 flex justify-end gap-2">
-            <Button
-              variant="secondary"
-              onClick={() => setShowModal(false)}
-            >
-              Cancelar
-            </Button>
-
-            <Button
-              onClick={async () => {
-              console.log(form);
-
-              // await fetch('/api/moradas', {...})
-
-              setForm({
-                nome: '',
-                categoria: '',
-                circuito: '',
-                zona: '',
-              });
-
-              setShowModal(false);
-              }}
-            >
-              Guardar
-            </Button>
-          </div>
-        </div>
-      </div>
-    )}
   </div>
   );
 }
